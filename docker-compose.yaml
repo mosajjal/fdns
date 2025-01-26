@@ -1,0 +1,84 @@
+services:
+  coredns:
+    image: docker.io/coredns/coredns:1.12.0
+    command: ["-conf=/coredns.conf"]
+    ports:
+      - 5310:5353
+      - 5310:5353/udp
+    volumes:
+      - blocklists:/blocklists
+      - dnsmonster_socket:/dnsmonster_socket/
+      - ./coredns.conf:/coredns.conf
+    depends_on:
+      - dnsmonster
+  blocklists:
+    build:
+      dockerfile: ./Dockerfile-blocklists
+    volumes:
+      - blocklists:/blocklists
+  dnsmonster:
+    image: ghcr.io/mosajjal/dnsmonster:v1.0.0
+    depends_on:
+      - clickhouse
+    command:
+      - "--serverName=fdns"
+      - "--dnstapSocket=unix:///dnsmonster_socket/dnstap.sock"
+      - "--dnstapPermission=777"
+      - "--clickhouseAddress=clickhouse:9000"
+      - "--clickhouseOutputType=1"
+      - "--clickhouseBatchSize=10"
+    volumes:
+      - dnsmonster_socket:/dnsmonster_socket/
+  clickhouse:
+    image: docker.io/clickhouse/clickhouse-server:23.8.4.69-alpine
+    restart: always
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    volumes:
+      - ./clickhouse/tables.sql:/tmp/tables.sql
+      - ./clickhouse/dictionaries/:/opt/dictionaries/
+      - ./clickhouse/dns_dictionary.xml:/etc/clickhouse-server/dns_dictionary.xml
+      - ./clickhouse/config.xml:/etc/clickhouse-server/config.xml
+      - clickhouse_logs:/var/log/clickhouse-server/
+      - clickhouse_data:/var/lib/clickhouse/
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "-O-",
+          "-q",
+          "http://127.0.0.1:8123/?query=SELECT%20name%20FROM%20system.tables%20WHERE%20name%20%3D%20%27DNS_LOG%27",
+        ]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+  grafana:
+    # needs to connect to victoriametrics on "victoriametrics:8428" -> post-up?
+    image: docker.io/grafana/grafana:9.3.6
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - clickhouse
+    volumes:
+      - ./bin/curl:/sbin/curl
+      - ./bin/jq:/sbin/jq
+  victoriametrics:
+    image: docker.io/victoriametrics/victoria-metrics:v1.110.0-scratch
+    command:
+      ["-retentionPeriod=30d", "-promscrape.config=/etc/victoriametrics.yaml"]
+    volumes:
+      - victoriametrics_data:/victoria-metrics-data
+      - ./victoriametrics.yaml:/etc/victoriametrics.yaml
+volumes:
+  dnsmonster_socket:
+  clickhouse_logs:
+  clickhouse_data:
+  victoriametrics_data:
+  blocklists:

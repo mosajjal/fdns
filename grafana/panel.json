@@ -1,0 +1,1563 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 1,
+    "iteration": 1576110193247,
+    "links": [],
+    "panels": [
+      {
+        "aliasColors": {},
+        "bars": true,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$dsource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "hiddenSeries": false,
+        "id": 4,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": false,
+          "total": false,
+          "values": false
+        },
+        "lines": false,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": true,
+        "steppedLine": false,
+        "targets": [
+          {
+            "database": "default",
+            "dateColDataType": "DnsDate",
+            "dateLoading": false,
+            "dateTimeColDataType": "t",
+            "datetimeLoading": false,
+            "formattedQuery": "<font color=\"darkorange\">SELECT</font> <font color=\"darkseagreen\">timestamp</font>, <font color=\"navajowhite\">groupArray</font>((Question, <font color=\"navajowhite\">count</font>)) <font color=\"darkorange\">FROM</font> (<font color=\"darkorange\">SELECT</font> <font color=\"darkcyan\">$timeSeries</font>  <font color=\"darkorange\">as</font> <font color=\"darkseagreen\">timestamp</font>, Question, <font color=\"navajowhite\">sum</font>(c) <font color=\"darkorange\">as</font> <font color=\"navajowhite\">count</font> <font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font> <font color=\"darkorange\">WHERE</font> <font color=\"darkcyan\">$timeFilter</font> <font color=\"yellow\">AND</font> Server <font color=\"darkorange\">IN</font>(<font color=\"darkcyan\">$ServerName</font>) <font color=\"darkorange\">group by</font> t, Question <font color=\"darkorange\">ORDER BY</font> <font color=\"navajowhite\">count</font> <font color=\"darkorange\">desc</font> <font color=\"darkorange\">limit</font> <font color=\"cornflowerblue\">5</font> by <font color=\"darkseagreen\">timestamp</font>) <font color=\"darkorange\">group by</font> <font color=\"darkseagreen\">timestamp</font><br /> <font color=\"darkorange\">order by</font> <font color=\"darkseagreen\">timestamp</font>",
+            "interval": "",
+            "intervalFactor": 1,
+            "query": "SELECT timestamp, groupArray((Question, count)) FROM (SELECT $timeSeries  as timestamp, Question, sum(c) as count FROM DNS_DOMAIN_COUNT WHERE $timeFilter  group by t, Question ORDER BY count desc limit 5 by timestamp) GROUP BY timestamp ORDER BY timestamp",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "table": "DNS_DOMAIN_COUNT",
+            "tableLoading": false,
+            "tags": [],
+            "targetLists": [
+              [
+                {
+                  "params": [
+                    "*"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "count"
+                }
+              ]
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Top Queried domains",
+        "tooltip": {
+          "shared": false,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "opm",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$dsource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 8,
+          "x": 0,
+          "y": 7
+        },
+        "hiddenSeries": false,
+        "id": 3,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "database": "default",
+            "dateColDataType": "DnsDate",
+            "dateLoading": false,
+            "dateTimeColDataType": "timestamp",
+            "datetimeLoading": false,
+            "formattedQuery": "<font color=\"darkorange\">SELECT</font> <font color=\"darkcyan\">$timeSeries</font> <font color=\"darkorange\">as</font> t, uniqMerge(UniqueDnsCount)<font color=\"yellow\">/</font><font color=\"darkcyan\">$interval</font> <font color=\"darkorange\">as</font> Count  <font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font> <font color=\"darkorange\">WHERE</font> <font color=\"darkcyan\">$timeFilter</font> <font color=\"yellow\">AND</font> Server <font color=\"darkorange\">IN</font>(<font color=\"darkcyan\">$ServerName</font>)   <font color=\"darkorange\">GROUP BY</font> t <font color=\"darkorange\">ORDER BY</font> t",
+            "intervalFactor": 1,
+            "query": "SELECT $timeSeries as t, uniqMerge(UniqueDnsCount)/$interval as Count  FROM DNS_DOMAIN_UNIQUE WHERE $timeFilter    GROUP BY t ORDER BY t",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "table": "DNS_DOMAIN_UNIQUE",
+            "tableLoading": false,
+            "tags": [],
+            "targetLists": [
+              [
+                {
+                  "params": [
+                    "*"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "count"
+                }
+              ]
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Unique Domains Queried Per Second",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$dsource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 8,
+          "x": 8,
+          "y": 7
+        },
+        "hiddenSeries": false,
+        "id": 5,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "database": "default",
+            "dateColDataType": "DnsDate",
+            "dateLoading": false,
+            "dateTimeColDataType": "timestamp",
+            "datetimeLoading": false,
+            "formattedQuery": "<font color=\"darkorange\">SELECT</font> <font color=\"darkcyan\">$timeSeries</font> <font color=\"darkorange\">as</font> t, avgMerge(AverageSize) <font color=\"darkorange\">AS</font> Bytes <font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font> <font color=\"darkorange\">WHERE</font> <font color=\"darkcyan\">$timeFilter</font> <font color=\"yellow\">AND</font> Server <font color=\"darkorange\">IN</font>(<font color=\"darkcyan\">$ServerName</font>)   <font color=\"darkorange\">Group by</font> t <font color=\"darkorange\">order by</font> t",
+            "intervalFactor": 1,
+            "query": "SELECT $timeSeries as t, avgMerge(AverageSize) AS Bytes FROM DNS_GENERAL_AGGREGATIONS WHERE $timeFilter    Group by t order by t",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "table": "DNS_GENERAL_AGGREGATIONS",
+            "tableLoading": false,
+            "tags": [],
+            "targetLists": [
+              [
+                {
+                  "params": [
+                    "*"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "count"
+                }
+              ]
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Average Packet Size",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "bytes",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$dsource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 8,
+          "x": 16,
+          "y": 7
+        },
+        "hiddenSeries": false,
+        "id": 10,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "database": "default",
+            "dateColDataType": "DnsDate",
+            "dateLoading": false,
+            "dateTimeColDataType": "timestamp",
+            "datetimeLoading": false,
+            "formattedQuery": "SELECT $timeSeries as t, sumMerge(TotalSize)*8/$interval as \"Bytes/s\" FROM $table   WHERE $timeFilter    Group by t order by t",
+            "intervalFactor": 1,
+            "query": "SELECT $timeSeries as t, sumMerge(TotalSize)*8/$interval as \"Bytes/s\" FROM DNS_GENERAL_AGGREGATIONS WHERE $timeFilter    Group by t order by t",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "table": "DNS_GENERAL_AGGREGATIONS",
+            "tableLoading": false,
+            "tags": [],
+            "targetLists": [
+              [
+                {
+                  "params": [
+                    "*"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "count"
+                }
+              ]
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Total Packet Size",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "bps",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$dsource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 0,
+          "y": 14
+        },
+        "hiddenSeries": false,
+        "id": 11,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "database": "default",
+            "dateColDataType": "DnsDate",
+            "dateLoading": false,
+            "dateTimeColDataType": "timestamp",
+            "datetimeLoading": false,
+            "formattedQuery": "<font color=\"darkorange\">SELECT</font> t, <font color=\"navajowhite\">groupArray</font>((IPVersion, <font color=\"navajowhite\">count</font><font color=\"yellow\">/</font><font color=\"darkcyan\">$interval</font>)) <font color=\"darkorange\">FROM</font> (<font color=\"darkorange\">SELECT</font> <font color=\"darkcyan\">$timeSeries</font> <font color=\"darkorange\">as</font> t, IPVersion, <font color=\"navajowhite\">sum</font>(c) <font color=\"darkorange\">as</font> <font color=\"navajowhite\">count</font> <font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font> <font color=\"darkorange\">WHERE</font> <font color=\"darkcyan\">$timeFilter</font> <font color=\"yellow\">AND</font> Server <font color=\"darkorange\">IN</font>(<font color=\"darkcyan\">$ServerName</font>)   <font color=\"darkorange\">group by</font> t, IPVersion <font color=\"darkorange\">ORDER BY</font> t) <font color=\"darkorange\">group by</font> t<br /> <font color=\"darkorange\">order by</font> t",
+            "intervalFactor": 2,
+            "query": "SELECT t, groupArray((IPVersion, count/$interval)) FROM (SELECT $timeSeries as t, IPVersion, sum(c) as count FROM DNS_SRCIP_MASK WHERE $timeFilter    group by t, IPVersion ORDER BY t) group by t\n order by t",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "table": "DNS_SRCIP_MASK",
+            "tableLoading": false,
+            "tags": [],
+            "targetLists": [
+              [
+                {
+                  "params": [
+                    "*"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "count"
+                }
+              ]
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Packet Count byIP Version",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "pps",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$dsource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 12,
+          "y": 14
+        },
+        "hiddenSeries": false,
+        "id": 2,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "database": "default",
+            "dateColDataType": "DnsDate",
+            "dateLoading": false,
+            "dateTimeColDataType": "timestamp",
+            "datetimeLoading": false,
+            "formattedQuery": "<font color=\"darkorange\">SELECT</font> t, <font color=\"navajowhite\">groupArray</font>((Protocol, <font color=\"navajowhite\">count</font><font color=\"yellow\">/</font><font color=\"darkcyan\">$interval</font>)) <font color=\"darkorange\">FROM</font> (<font color=\"darkorange\">SELECT</font> <font color=\"darkcyan\">$timeSeries</font> <font color=\"darkorange\">as</font> t, Protocol, <font color=\"navajowhite\">sum</font>(c) <font color=\"darkorange\">as</font> <font color=\"navajowhite\">count</font> <font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font> <font color=\"darkorange\">WHERE</font> <font color=\"darkcyan\">$timeFilter</font> <font color=\"yellow\">AND</font> Server <font color=\"darkorange\">IN</font>(<font color=\"darkcyan\">$ServerName</font>)   <font color=\"darkorange\">group by</font> t, Protocol <font color=\"darkorange\">ORDER BY</font> t) <font color=\"darkorange\">group by</font> t<br /> <font color=\"darkorange\">order by</font> t",
+            "intervalFactor": 2,
+            "query": "SELECT t, groupArray((Protocol, count/$interval)) FROM (SELECT $timeSeries as t, Protocol, sum(c) as count FROM DNS_PROTOCOL WHERE $timeFilter    group by t, Protocol ORDER BY t) group by t\n order by t",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "table": "DNS_PROTOCOL",
+            "tableLoading": false,
+            "tags": [],
+            "targetLists": [
+              [
+                {
+                  "params": [
+                    "*"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "count"
+                }
+              ]
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Packet Count by Transport Protocol",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "pps",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "breakPoint": "50%",
+        "cacheTimeout": null,
+        "combine": {
+          "label": "Others",
+          "threshold": 0
+        },
+        "datasource": "$dsource",
+        "fontSize": "80%",
+        "format": "short",
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 0,
+          "y": 20
+        },
+        "id": 13,
+        "interval": null,
+        "legend": {
+          "show": false,
+          "values": true
+        },
+        "legendType": "Under graph",
+        "links": [],
+        "maxDataPoints": 3,
+        "nullPointMode": "connected",
+        "options": {},
+        "pieType": "pie",
+        "strokeWidth": 1,
+        "targets": [
+          {
+            "database": "default",
+            "dateColDataType": "DnsDate",
+            "dateLoading": false,
+            "dateTimeColDataType": "timestamp",
+            "datetimeLoading": false,
+            "formattedQuery": "<font color=\"darkorange\">SELECT</font> <font color=\"cornflowerblue\">0</font>, <font color=\"navajowhite\">groupArray</font>((IP, total)) <font color=\"darkorange\">FROM</font> (<font color=\"darkorange\">SELECT</font> <font color=\"navajowhite\">IPv4NumToString</font>(toUInt32(SrcIP)) <font color=\"darkorange\">AS</font> IP,<br /><font color=\"navajowhite\">sum</font>(c) <font color=\"darkorange\">as</font> total <font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font> <font color=\"darkorange\">PREWHERE</font> IPVersion<font color=\"yellow\">=</font><font color=\"cornflowerblue\">4</font> <font color=\"darkorange\">WHERE</font> <font color=\"darkcyan\">$timeFilter</font> <font color=\"yellow\">AND</font> Server <font color=\"darkorange\">IN</font>(<font color=\"darkcyan\">$ServerName</font>)     <font color=\"darkorange\">GROUP BY</font> SrcIP <font color=\"darkorange\">order by</font> SrcIP)",
+            "intervalFactor": 1,
+            "query": "SELECT 0, groupArray((IP, total)) FROM (SELECT IPv6NumToString(SrcIP) AS IP,sum(c) as total FROM DNS_SRCIP_MASK PREWHERE IPVersion=4 WHERE $timeFilter      GROUP BY SrcIP order by SrcIP desc limit 20)",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "table": "DNS_SRCIP_MASK",
+            "tableLoading": false,
+            "tags": [],
+            "targetLists": [
+              [
+                {
+                  "params": [
+                    "*"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "count"
+                }
+              ]
+            ]
+          }
+        ],
+        "title": "IPv4 Packet Destination Prefix",
+        "type": "piechart",
+        "valueName": "current"
+      },
+      {
+        "aliasColors": {},
+        "breakPoint": "50%",
+        "cacheTimeout": null,
+        "combine": {
+          "label": "Others",
+          "threshold": 0
+        },
+        "datasource": "$dsource",
+        "fontSize": "80%",
+        "format": "short",
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 12,
+          "y": 20
+        },
+        "id": 12,
+        "interval": null,
+        "legend": {
+          "show": false,
+          "values": true
+        },
+        "legendType": "Under graph",
+        "links": [],
+        "maxDataPoints": 3,
+        "nullPointMode": "connected",
+        "options": {},
+        "pieType": "pie",
+        "strokeWidth": 1,
+        "targets": [
+          {
+            "database": "default",
+            "dateColDataType": "DnsDate",
+            "dateLoading": false,
+            "dateTimeColDataType": "timestamp",
+            "datetimeLoading": false,
+            "formattedQuery": "<font color=\"darkorange\">SELECT</font> <font color=\"cornflowerblue\">0</font>, <font color=\"navajowhite\">groupArray</font>((IP, total)) <font color=\"darkorange\">FROM</font> (<font color=\"darkorange\">SELECT</font> <font color=\"navajowhite\">IPv6NumToString</font>(<font color=\"navajowhite\">toFixedString</font>(<font color=\"navajowhite\">unhex</font>(<font color=\"navajowhite\">hex</font>(SrcIP)), <font color=\"cornflowerblue\">16</font>)) <font color=\"darkorange\">AS</font> IP,<br /><font color=\"navajowhite\">sum</font>(c) <font color=\"darkorange\">as</font> total <font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font> <font color=\"darkorange\">PREWHERE</font> IPVersion<font color=\"yellow\">=</font><font color=\"cornflowerblue\">6</font> <font color=\"darkorange\">WHERE</font> <font color=\"darkcyan\">$timeFilter</font> <font color=\"yellow\">AND</font> Server <font color=\"darkorange\">IN</font>(<font color=\"darkcyan\">$ServerName</font>)    <font color=\"darkorange\">GROUP BY</font> SrcIP <font color=\"darkorange\">order by</font> SrcIP <font color=\"darkorange\">desc</font> <font color=\"darkorange\">limit</font> <font color=\"cornflowerblue\">20</font>)",
+            "intervalFactor": 1,
+            "query": "SELECT 0, groupArray((IP, total)) FROM (SELECT IPv6NumToString(SrcIP) AS IP,sum(c) as total FROM DNS_SRCIP_MASK PREWHERE IPVersion=6 WHERE $timeFilter     GROUP BY SrcIP order by SrcIP desc limit 20)",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "table": "DNS_SRCIP_MASK",
+            "tableLoading": false,
+            "tags": [],
+            "targetLists": [
+              [
+                {
+                  "params": [
+                    "*"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "count"
+                }
+              ]
+            ]
+          }
+        ],
+        "title": "IPv6 Packet Destination Top 20 Prefix",
+        "type": "piechart",
+        "valueName": "current"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$dsource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 0,
+          "y": 27
+        },
+        "hiddenSeries": false,
+        "id": 7,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "database": "default",
+            "dateColDataType": "DnsDate",
+            "dateLoading": false,
+            "dateTimeColDataType": "timestamp",
+            "datetimeLoading": false,
+            "formattedQuery": "<font color=\"darkorange\">SELECT</font> t, <font color=\"navajowhite\">groupArray</font>((<font color=\"navajowhite\">dictGetString</font>(<font color=\"lightgreen\">'dns_type'</font>, <font color=\"lightgreen\">'Name'</font>, <font color=\"navajowhite\">toUInt64</font>(<font color=\"darkorange\">Type</font>)), <font color=\"navajowhite\">count</font><font color=\"yellow\">/</font><font color=\"darkcyan\">$interval</font>)) <font color=\"darkorange\">FROM</font> (<font color=\"darkorange\">SELECT</font> <font color=\"darkcyan\">$timeSeries</font> <font color=\"darkorange\">as</font> t, <font color=\"darkorange\">Type</font>, <font color=\"navajowhite\">sum</font>(c) <font color=\"darkorange\">as</font> <font color=\"navajowhite\">count</font> <font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font> <font color=\"darkorange\">WHERE</font> <font color=\"darkcyan\">$timeFilter</font> <font color=\"yellow\">AND</font> Server <font color=\"darkorange\">IN</font>(<font color=\"darkcyan\">$ServerName</font>)   <font color=\"darkorange\">group by</font> t, <font color=\"darkorange\">Type</font> <font color=\"darkorange\">ORDER BY</font> t) <font color=\"darkorange\">group by</font> t<br /> <font color=\"darkorange\">order by</font> t",
+            "intervalFactor": 1,
+            "query": "SELECT t, groupArray((dictGetString('dns_type', 'Name', toUInt64(Type)), count/$interval)) FROM (SELECT $timeSeries as t, Type, sum(c) as count FROM DNS_TYPE WHERE $timeFilter    group by t, Type ORDER BY t) group by t\n order by t",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "table": "DNS_TYPE",
+            "tableLoading": false,
+            "tags": [],
+            "targetLists": [
+              [
+                {
+                  "params": [
+                    "*"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "count"
+                }
+              ]
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "DNS Question Type",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "pps",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$dsource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 12,
+          "y": 27
+        },
+        "hiddenSeries": false,
+        "id": 8,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "database": "default",
+            "dateColDataType": "DnsDate",
+            "dateLoading": false,
+            "dateTimeColDataType": "timestamp",
+            "datetimeLoading": false,
+            "formattedQuery": "<font color=\"darkorange\">SELECT</font> t, <font color=\"navajowhite\">groupArray</font>((<font color=\"navajowhite\">dictGetString</font>(<font color=\"lightgreen\">'dns_class'</font>, <font color=\"lightgreen\">'Name'</font>, <font color=\"navajowhite\">toUInt64</font>(Class)), <font color=\"navajowhite\">count</font><font color=\"yellow\">/</font><font color=\"darkcyan\">$interval</font>)) <font color=\"darkorange\">FROM</font> (<font color=\"darkorange\">SELECT</font> <font color=\"darkcyan\">$timeSeries</font> <font color=\"darkorange\">as</font> t, Class, <font color=\"navajowhite\">sum</font>(c) <font color=\"darkorange\">as</font> <font color=\"navajowhite\">count</font> <font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font> <font color=\"darkorange\">WHERE</font> <font color=\"darkcyan\">$timeFilter</font> <font color=\"yellow\">AND</font> Server <font color=\"darkorange\">IN</font>(<font color=\"darkcyan\">$ServerName</font>)   <font color=\"darkorange\">group by</font> t, Class <font color=\"darkorange\">ORDER BY</font> t) <font color=\"darkorange\">group by</font> t<br /> <font color=\"darkorange\">order by</font> t",
+            "intervalFactor": 1,
+            "query": "SELECT t, groupArray((dictGetString('dns_class', 'Name', toUInt64(Class)), count/$interval)) FROM (SELECT $timeSeries as t, Class, sum(c) as count FROM DNS_CLASS WHERE $timeFilter    group by t, Class ORDER BY t) group by t\n order by t",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "table": "DNS_CLASS",
+            "tableLoading": false,
+            "tags": [],
+            "targetLists": [
+              [
+                {
+                  "params": [
+                    "*"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "count"
+                }
+              ]
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Query Class",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "ops",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$dsource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 0,
+          "y": 34
+        },
+        "hiddenSeries": false,
+        "id": 9,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "database": "default",
+            "dateColDataType": "DnsDate",
+            "dateLoading": false,
+            "dateTimeColDataType": "timestamp",
+            "datetimeLoading": false,
+            "formattedQuery": "<font color=\"darkorange\">SELECT</font> t, <font color=\"navajowhite\">groupArray</font>((<font color=\"navajowhite\">dictGetString</font>(<font color=\"lightgreen\">'dns_response'</font>, <font color=\"lightgreen\">'Name'</font>, <font color=\"navajowhite\">toUInt64</font>(ResponseCode)), <font color=\"navajowhite\">count</font><font color=\"yellow\">/</font><font color=\"darkcyan\">$interval</font>)) <font color=\"darkorange\">FROM</font> (<font color=\"darkorange\">SELECT</font> <font color=\"darkcyan\">$timeSeries</font> <font color=\"darkorange\">as</font> t, ResponseCode, <font color=\"navajowhite\">sum</font>(c) <font color=\"darkorange\">as</font> <font color=\"navajowhite\">count</font> <font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font> <font color=\"darkorange\">WHERE</font> <font color=\"darkcyan\">$timeFilter</font> <font color=\"yellow\">AND</font> Server <font color=\"darkorange\">IN</font>(<font color=\"darkcyan\">$ServerName</font>)   <font color=\"darkorange\">group by</font> t, ResponseCode <font color=\"darkorange\">ORDER BY</font> t) <font color=\"darkorange\">group by</font> t<br /> <font color=\"darkorange\">order by</font> t",
+            "intervalFactor": 1,
+            "query": "SELECT t, groupArray((dictGetString('dns_response', 'Name', toUInt64(ResponseCode)), count/$interval)) FROM (SELECT $timeSeries as t, ResponseCode, sum(c) as count FROM DNS_RESPONSECODE WHERE $timeFilter    group by t, ResponseCode ORDER BY t) group by t\n order by t",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "table": "DNS_RESPONSECODE",
+            "tableLoading": false,
+            "tags": [],
+            "targetLists": [
+              [
+                {
+                  "params": [
+                    "*"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "count"
+                }
+              ]
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Response code",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "ops",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$dsource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 12,
+          "y": 34
+        },
+        "hiddenSeries": false,
+        "id": 6,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "alias": "0"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "database": "default",
+            "dateColDataType": "DnsDate",
+            "dateLoading": false,
+            "dateTimeColDataType": "timestamp",
+            "datetimeLoading": false,
+            "formattedQuery": "<font color=\"darkorange\">SELECT</font> t, <font color=\"navajowhite\">groupArray</font>((<font color=\"navajowhite\">dictGetString</font>(<font color=\"lightgreen\">'dns_opcode'</font>, <font color=\"lightgreen\">'Name'</font>, <font color=\"navajowhite\">toUInt64</font>(OpCode)), <font color=\"navajowhite\">count</font><font color=\"yellow\">/</font><font color=\"darkcyan\">$interval</font>)) <font color=\"darkorange\">FROM</font> (<font color=\"darkorange\">SELECT</font> <font color=\"darkcyan\">$timeSeries</font> <font color=\"darkorange\">as</font> t, OpCode, <font color=\"navajowhite\">sum</font>(c) <font color=\"darkorange\">as</font> <font color=\"navajowhite\">count</font> <font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font> <font color=\"darkorange\">WHERE</font> <font color=\"darkcyan\">$timeFilter</font> <font color=\"yellow\">AND</font> Server <font color=\"darkorange\">IN</font>(<font color=\"darkcyan\">$ServerName</font>)   <font color=\"darkorange\">group by</font> t, OpCode <font color=\"darkorange\">ORDER BY</font> t) <font color=\"darkorange\">group by</font> t<br /> <font color=\"darkorange\">order by</font> t",
+            "interval": "",
+            "intervalFactor": 2,
+            "query": "SELECT t, groupArray((dictGetString('dns_opcode', 'Name', toUInt64(OpCode)), count/$interval)) FROM (SELECT $timeSeries as t, OpCode, sum(c) as count FROM DNS_OPCODE WHERE $timeFilter    group by t, OpCode ORDER BY t) group by t\n order by t",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "table": "DNS_OPCODE",
+            "tableLoading": false,
+            "tags": [],
+            "targetLists": [
+              [
+                {
+                  "params": [
+                    "*"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "count"
+                }
+              ]
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "OpCode Received",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "ops",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$dsource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 0,
+          "y": 41
+        },
+        "hiddenSeries": false,
+        "id": 14,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "database": "default",
+            "dateColDataType": "DnsDate",
+            "dateLoading": false,
+            "dateTimeColDataType": "timestamp",
+            "datetimeLoading": false,
+            "formattedQuery": "<font color=\"darkorange\">SELECT</font> <font color=\"darkcyan\">$timeSeries</font> <font color=\"darkorange\">as</font> t, sumMerge(EdnsCount)<font color=\"yellow\">/</font><font color=\"darkcyan\">$interval</font> <font color=\"darkorange\">as</font> Edns0Present <font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font> <font color=\"darkorange\">WHERE</font> <font color=\"darkcyan\">$timeFilter</font> <font color=\"yellow\">AND</font> Server <font color=\"darkorange\">IN</font>(<font color=\"darkcyan\">$ServerName</font>)   <font color=\"darkorange\">GROUP BY</font> t <font color=\"darkorange\">ORDER BY</font> t",
+            "intervalFactor": 1,
+            "query": "SELECT $timeSeries as t, sumMerge(EdnsCount)/$interval as Edns0Present FROM DNS_EDNS WHERE $timeFilter    GROUP BY t ORDER BY t",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "table": "DNS_EDNS",
+            "tableLoading": false,
+            "tags": [],
+            "targetLists": [
+              [
+                {
+                  "params": [
+                    "*"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "count"
+                }
+              ]
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Edns0 Present in Query",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "ops",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$dsource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 12,
+          "y": 41
+        },
+        "hiddenSeries": false,
+        "id": 15,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "database": "default",
+            "dateColDataType": "DnsDate",
+            "dateLoading": false,
+            "dateTimeColDataType": "timestamp",
+            "datetimeLoading": false,
+            "formattedQuery": "<font color=\"darkorange\">SELECT</font> <font color=\"darkcyan\">$timeSeries</font> <font color=\"darkorange\">as</font> t, sumMerge(DoBitCount)<font color=\"yellow\">/</font><font color=\"darkcyan\">$interval</font> <font color=\"darkorange\">as</font> DoBitSet <font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font> <font color=\"darkorange\">WHERE</font> <font color=\"darkcyan\">$timeFilter</font> <font color=\"yellow\">AND</font> Server <font color=\"darkorange\">IN</font>(<font color=\"darkcyan\">$ServerName</font>)  <font color=\"darkorange\">GROUP BY</font> t <font color=\"darkorange\">ORDER BY</font> t",
+            "intervalFactor": 2,
+            "query": "SELECT $timeSeries as t, sumMerge(DoBitCount)/$interval as DoBitSet FROM DNS_EDNS WHERE $timeFilter   GROUP BY t ORDER BY t",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "table": "DNS_EDNS",
+            "tableLoading": false,
+            "tags": [],
+            "targetLists": [
+              [
+                {
+                  "params": [
+                    "*"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "count"
+                }
+              ]
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "DoBit Present in Packet",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "ops",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      }
+    ],
+    "refresh": "30s",
+    "schemaVersion": 21,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "tags": [],
+            "text": "",
+            "value": ""
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "Data Source",
+          "multi": false,
+          "name": "dsource",
+          "options": [],
+          "query": "vertamedia-clickhouse-datasource",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "type": "datasource"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d"
+      ]
+    },
+    "timezone": "browser",
+    "title": "DNS Monitoring",
+    "name": "dnsmonster",
+    "uid": "lyxfOy-Wz",
+    "version": 19
+  }
