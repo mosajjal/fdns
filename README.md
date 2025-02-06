@@ -213,4 +213,13 @@ easiest way to configure Mac DNS is through Network setting's DNS.
 
 ## Screenshots
 
+![image](https://github.com/user-attachments/assets/d79ee2b1-fe5d-401d-924f-709053385354)
+
+![image](https://github.com/user-attachments/assets/d0828f89-9378-4a96-a0a7-0bd2bda5b40b)
+
+![image](https://github.com/user-attachments/assets/59e61416-3f5c-42a0-a1a5-526feef304c4)
+
+### Memory usage with 4-5 active clients
+
+![image](https://github.com/user-attachments/assets/e6da3788-16e4-4673-9c33-6f288e1fa3ae)
 
