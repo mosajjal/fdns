@@ -4,12 +4,8 @@ services:
     command: ["-conf=/coredns.conf"]
     ports:
       # plain DNS
-      - 5310:5310/tcp
-      - 5310:5310/udp
-      # DNS Over HTTPS
-      - 5443:5443/tcp
-      # DNS Over TLS
-      - 5853:5853/tcp
+      - 53:5310/tcp
+      - 53:5310/udp
     volumes:
       - blocklists:/blocklists
       - dnsmonster_socket:/dnsmonster_socket/
