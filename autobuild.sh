@@ -15,7 +15,7 @@ sed -i "s/$old_ttl_line/$new_ttl_line/" ./clickhouse/tables.sql
 
 echo "this builder uses Traefik to generate a TLS certificate using ACME for your DoH and DoT. make sure port 80, 443 and 853 are available on your host"
 read -p "you need to provide a domain name and an ACME email to get started. the domain name needs to have an A record to this hosts's public IP. type Y if you are ready " acme
-if [ "$selfsign" == "y" ] || [ "$selfsign" == "Y" ]; then
+if [ "$acme" == "y" ] || [ "$acme" == "Y" ]; then
     read -p "enter your hostname: " hostname
     openssl req -subj "/CN=$hostname" -addext "subjectAltName=DNS:$hostname,DNS:*.$hostname" -x509 -sha256 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes
     # fix permissions
