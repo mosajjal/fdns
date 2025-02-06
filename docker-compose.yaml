@@ -25,6 +25,7 @@ services:
       - blocklists:/blocklists
   dnsmonster:
     image: ghcr.io/mosajjal/dnsmonster:v1.0.0
+    restart: always
     depends_on:
       clickhouse:
         condition: service_healthy
@@ -66,13 +67,8 @@ services:
     restart: always
     ports:
       - "3000:3000"
-    depends_on:
-      - clickhouse
-    volumes:
-      - ./bin/curl:/sbin/curl
-      - ./bin/jq:/sbin/jq
     post_start:
-      - command: sh -c "sleep 3; grafana-cli plugins install vertamedia-clickhouse-datasource"
+      - command: sh -c "sleep 5; grafana cli plugins install vertamedia-clickhouse-datasource"
   victoriametrics:
     image: docker.io/victoriametrics/victoria-metrics:v1.110.0-scratch
     command:

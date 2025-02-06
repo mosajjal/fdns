@@ -29,9 +29,11 @@ echo "Adding the datasources to Grafana"
 curl -H 'Content-Type:application/json' 'http://admin:admin@127.0.0.1:3000/api/datasources' --data-raw '{"name":"ClickHouse","type":"vertamedia-clickhouse-datasource","url":"http://clickhouse:8123","access":"proxy"}'
 curl -H 'Content-Type:application/json' 'http://admin:admin@127.0.0.1:3000/api/datasources' --data-raw '{"name":"VictoriaMetrics", "type":"prometheus","access":"proxy","url":"http://victoriametrics:8428"}'
 echo
-echo "Adding the dashboard to Grafana"
-dashboard_json=`cat grafana/panel.json | bin/jq '{Dashboard:.} | .Dashboard.id = null'`
+echo "Adding the dashboards to Grafana"
+dashboard_json=`cat grafana/dnsmonitoring.json | bin/jq '{Dashboard:.} | .Dashboard.id = null'`
 curl -H 'Content-Type:application/json' 'http://admin:admin@127.0.0.1:3000/api/dashboards/db' --data "$dashboard_json"
+metrics_json=`cat grafana/metrics.json | bin/jq '{Dashboard:.} | .Dashboard.id = null'`
+curl -H 'Content-Type:application/json' 'http://admin:admin@127.0.0.1:3000/api/dashboards/db' --data "$metrics_json"
 echo
 
 echo "restarting grafana container after plugin installation"
