@@ -1,0 +1,44 @@
+# config/static.yml
+http:
+  serversTransports:
+    insecure:
+      insecureSkipVerify: true
+    secure:
+      insecureSkipVerify: false
+      # Optional: If you want to verify upstream certs with a specific CA
+      # rootCAs:
+      #   - /certs/rootca.pem
+
+  routers:
+    web:
+      rule: "Host(`TO_BE_REPLACED_DOMAIN`)"
+      entryPoints:
+        - websecure
+      service: webservice
+      tls:
+        certResolver: le
+
+  services:
+    webservice:
+      loadBalancer:
+        servers:
+          - url: "https://coredns:5443"
+        serversTransport: insecure    # Use 'secure' here if you want verification
+
+tcp:
+  routers:
+    dns:
+      rule: "HostSNI(`TO_BE_REPLACED_DOMAIN`)"
+      entryPoints:
+        - dns
+      service: dnsservice
+      tls:
+        certResolver: le
+        passthrough: false
+
+  services:
+    dnsservice:
+      loadBalancer:
+        servers:
+          - address: "coredns:5853"
+        # For TCP services, TLS settings are controlled by the tls.passthrough option

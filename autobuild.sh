@@ -13,13 +13,17 @@ old_ttl_line="7 DAY DELETE -- DNS_TTL_VARIABLE"
 
 sed -i "s/$old_ttl_line/$new_ttl_line/" ./clickhouse/tables.sql
 
-echo "this builder expects you to maintain a certificate and key in the current directory under the filenames"
-read -p "cert.pem and key.pem. For testing, I can create a self-signed certificate for you. would you like to do that? " selfsign
+echo "this builder uses Traefik to generate a TLS certificate using ACME for your DoH and DoT. make sure port 80, 443 and 853 are available on your host"
+read -p "you need to provide a domain name and an ACME email to get started. the domain name needs to have an A record to this hosts's public IP. type Y if you are ready " acme
 if [ "$selfsign" == "y" ] || [ "$selfsign" == "Y" ]; then
     read -p "enter your hostname: " hostname
     openssl req -subj "/CN=$hostname" -addext "subjectAltName=DNS:$hostname,DNS:*.$hostname" -x509 -sha256 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes
     # fix permissions
     chmod 755 key.pem
+    sed -i "s/TO_BE_REPLACED_DOMAIN/$hostname/" traefik.yaml
+
+    read -p  "enter your ACME email: " acmeemail
+    sed -i "s/TO_BE_REPLACED_EMAIL@example.com/$acmeemail/" docker-compose.yaml
 fi
 
 echo "Starting the containers..."
@@ -30,9 +34,9 @@ curl -H 'Content-Type:application/json' 'http://admin:admin@127.0.0.1:3000/api/d
 curl -H 'Content-Type:application/json' 'http://admin:admin@127.0.0.1:3000/api/datasources' --data-raw '{"name":"VictoriaMetrics", "type":"prometheus","access":"proxy","url":"http://victoriametrics:8428"}'
 echo
 echo "Adding the dashboards to Grafana"
-dashboard_json=`cat grafana/dnsmonitoring.json | bin/jq '{Dashboard:.} | .Dashboard.id = null'`
+dashboard_json=`cat grafana/dnsmonitoring.json | jq '{Dashboard:.} | .Dashboard.id = null'`
 curl -H 'Content-Type:application/json' 'http://admin:admin@127.0.0.1:3000/api/dashboards/db' --data "$dashboard_json"
-metrics_json=`cat grafana/metrics.json | bin/jq '{Dashboard:.} | .Dashboard.id = null'`
+metrics_json=`cat grafana/metrics.json | jq '{Dashboard:.} | .Dashboard.id = null'`
 curl -H 'Content-Type:application/json' 'http://admin:admin@127.0.0.1:3000/api/dashboards/db' --data "$metrics_json"
 echo
 

@@ -18,6 +18,26 @@ services:
       - ./key.pem:/certs/key.pem:ro
     depends_on:
       - dnsmonster
+
+  traefik:
+    image: traefik:3.3.3
+    command:
+      - "--api.insecure=false"
+      - "--providers.file.directory=/etc/traefik/config"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.dns.address=:853"
+      - "--certificatesresolvers.le.acme.email=TO_BE_REPLACED_EMAIL@example.com"
+      - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.le.acme.tlschallenge=true"
+      - "--serversTransport.insecureSkipVerify=true" # Skip verification for self-signed certs
+    ports:
+      - "443:443"
+      - "853:853"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "./traefik.yaml:/etc/traefik/config/static.yml:ro"
+    restart: unless-stopped
+
   blocklists:
     build:
       dockerfile: ./Dockerfile-blocklists
