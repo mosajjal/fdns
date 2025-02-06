@@ -40,5 +40,4 @@ tcp:
     dnsservice:
       loadBalancer:
         servers:
-          - address: "coredns:5853"
-        # For TCP services, TLS settings are controlled by the tls.passthrough option
+          - address: "coredns:5310"
