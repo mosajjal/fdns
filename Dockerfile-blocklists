@@ -14,7 +14,7 @@ RUN git clone --depth 1 https://github.com/StevenBlack/hosts /blocklists
 
 # add the update script
 RUN echo "#!/bin/sh" >> /etc/periodic/15min/updateblocks.sh
-RUN echo "cd /blocklists && git pull --depth 1 origin master" >>  /etc/periodic/15min/updateblocks.sh
+RUN echo "cd /blocklists && git reset --hard HEAD && git pull --depth 1 origin master" >>  /etc/periodic/15min/updateblocks.sh
 
 RUN chmod +x /etc/periodic/15min/updateblocks.sh
 

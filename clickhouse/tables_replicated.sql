@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS DNS_LOG (
   PRIMARY KEY (timestamp , Server, cityHash64(ID))
   ORDER BY (timestamp, Server, cityHash64(ID))
   SAMPLE BY cityHash64(ID)
-  TTL DnsDate + INTERVAL 3000 DAY -- DNS_TTL_VARIABLE
+  TTL DnsDate + INTERVAL 7 DAY DELETE -- DNS_TTL_VARIABLE
   SETTINGS index_granularity = 8192;
 
 -- View for top queried domains
@@ -33,7 +33,7 @@ ENGINE= ReplicatedSummingMergeTree
   PRIMARY KEY (DnsDate, Server, QH)
   ORDER BY (DnsDate, Server, QH)
   SAMPLE BY QH
-  TTL DnsDate + INTERVAL 3000 DAY -- DNS_TTL_VARIABLE
+  TTL DnsDate + INTERVAL 7 DAY DELETE -- DNS_TTL_VARIABLE
   SETTINGS index_granularity = 8192
   AS SELECT DnsDate, toStartOfMinute(timestamp) as t, Server, Question, cityHash64(Question) as QH, count(*) as c FROM DNS_LOG WHERE QR=0 GROUP BY DnsDate, t, Server, Question;
 
@@ -43,7 +43,7 @@ ENGINE= ReplicatedAggregatingMergeTree
   PARTITION BY toYYYYMMDD(DnsDate)
   PRIMARY KEY (DnsDate, (timestamp, Server)) 
   ORDER BY (DnsDate, (timestamp, Server))
-  TTL DnsDate + INTERVAL 3000 DAY -- DNS_TTL_VARIABLE
+  TTL DnsDate + INTERVAL 7 DAY DELETE -- DNS_TTL_VARIABLE
   SETTINGS index_granularity = 8192
   AS SELECT DnsDate, timestamp, Server, uniqState(Question) AS UniqueDnsCount FROM DNS_LOG WHERE QR=0 GROUP BY Server, DnsDate, timestamp;
 
@@ -54,7 +54,7 @@ ENGINE= ReplicatedSummingMergeTree
   PRIMARY KEY (DnsDate, Server, PH)
   ORDER BY (DnsDate, Server, PH)
   SAMPLE BY PH
-  TTL DnsDate + INTERVAL 3000 DAY -- DNS_TTL_VARIABLE
+  TTL DnsDate + INTERVAL 7 DAY DELETE -- DNS_TTL_VARIABLE
   SETTINGS index_granularity = 8192
   AS SELECT DnsDate, timestamp, Server, Protocol, cityHash64(Protocol) as PH, count(*) as c FROM DNS_LOG GROUP BY Server, DnsDate, timestamp, Protocol;
 
@@ -65,7 +65,7 @@ ENGINE= ReplicatedAggregatingMergeTree
   PARTITION BY toYYYYMMDD(DnsDate)
   PRIMARY KEY (DnsDate, (timestamp, Server)) 
   ORDER BY (DnsDate, (timestamp, Server))
-  TTL DnsDate + INTERVAL 3000 DAY -- DNS_TTL_VARIABLE
+  TTL DnsDate + INTERVAL 7 DAY DELETE -- DNS_TTL_VARIABLE
   SETTINGS index_granularity = 8192
   AS SELECT DnsDate, timestamp, Server, sumState(Size) AS TotalSize, avgState(Size) AS AverageSize FROM DNS_LOG GROUP BY Server, DnsDate, timestamp;
 
@@ -76,7 +76,7 @@ ENGINE= ReplicatedAggregatingMergeTree
   PARTITION BY toYYYYMMDD(DnsDate)
   PRIMARY KEY (DnsDate, (timestamp, Server)) 
   ORDER BY (DnsDate, (timestamp, Server))
-  TTL DnsDate + INTERVAL 3000 DAY -- DNS_TTL_VARIABLE
+  TTL DnsDate + INTERVAL 7 DAY DELETE -- DNS_TTL_VARIABLE
   SETTINGS index_granularity = 8192
   AS SELECT DnsDate, timestamp, Server, sumState(Edns0Present) as EdnsCount, sumState(DoBit) as DoBitCount FROM DNS_LOG WHERE QR=0 GROUP BY Server, DnsDate, timestamp;
 
@@ -88,7 +88,7 @@ ENGINE= ReplicatedSummingMergeTree
   PRIMARY KEY  (timestamp, Server, OpCode)
   ORDER BY  (timestamp, Server, OpCode)
   SAMPLE BY OpCode
-  TTL DnsDate + INTERVAL 3000 DAY -- DNS_TTL_VARIABLE
+  TTL DnsDate + INTERVAL 7 DAY DELETE -- DNS_TTL_VARIABLE
   SETTINGS index_granularity = 8192
   AS SELECT DnsDate, timestamp, Server, OpCode, count(*) as c FROM DNS_LOG WHERE QR=0 GROUP BY Server, DnsDate, timestamp, OpCode;
 
@@ -100,7 +100,7 @@ ENGINE= ReplicatedSummingMergeTree
   PRIMARY KEY  (timestamp, Server, Type)
   ORDER BY  (timestamp, Server, Type)
   SAMPLE BY Type
-  TTL DnsDate + INTERVAL 3000 DAY -- DNS_TTL_VARIABLE
+  TTL DnsDate + INTERVAL 7 DAY DELETE -- DNS_TTL_VARIABLE
   SETTINGS index_granularity = 8192
   AS   SELECT DnsDate, timestamp, Server, Type, count(*) as c FROM DNS_LOG WHERE QR=0 GROUP BY Server, DnsDate, timestamp, Type;
 
@@ -111,7 +111,7 @@ ENGINE= ReplicatedSummingMergeTree
   PRIMARY KEY  (timestamp, Server, Class)
   ORDER BY  (timestamp, Server, Class)
   SAMPLE BY Class
-  TTL DnsDate + INTERVAL 3000 DAY -- DNS_TTL_VARIABLE
+  TTL DnsDate + INTERVAL 7 DAY DELETE -- DNS_TTL_VARIABLE
   SETTINGS index_granularity = 8192
   AS SELECT DnsDate, timestamp, Server, Class, count(*) as c FROM DNS_LOG WHERE QR=0 GROUP BY Server, DnsDate, timestamp, Class;  
 
@@ -122,7 +122,7 @@ ENGINE= ReplicatedSummingMergeTree
   PRIMARY KEY  (timestamp, Server, ResponseCode)
   ORDER BY  (timestamp, Server, ResponseCode)
   SAMPLE BY ResponseCode
-  TTL DnsDate + INTERVAL 3000 DAY -- DNS_TTL_VARIABLE
+  TTL DnsDate + INTERVAL 7 DAY DELETE -- DNS_TTL_VARIABLE
   SETTINGS index_granularity = 8192
   AS SELECT DnsDate, timestamp, Server, ResponseCode, count(*) as c FROM DNS_LOG WHERE QR=1 GROUP BY Server, DnsDate, timestamp, ResponseCode;    
 
@@ -134,7 +134,7 @@ ENGINE= ReplicatedSummingMergeTree
   PRIMARY KEY  (timestamp, Server, IPVersion, SrcIP)
   ORDER BY  (timestamp, Server, IPVersion, SrcIP)
   SAMPLE BY SrcIP
-  TTL DnsDate + INTERVAL 3000 DAY -- DNS_TTL_VARIABLE
+  TTL DnsDate + INTERVAL 7 DAY DELETE -- DNS_TTL_VARIABLE
   SETTINGS index_granularity = 8192
   AS SELECT DnsDate, timestamp, Server, IPVersion, SrcIP, count(*) as c FROM DNS_LOG GROUP BY Server, DnsDate, timestamp, IPVersion, SrcIP ;  
 
@@ -145,7 +145,7 @@ ENGINE= ReplicatedSummingMergeTree
   PRIMARY KEY  (timestamp, Server, IPVersion, DstIP)
   ORDER BY  (timestamp, Server, IPVersion, DstIP)
   SAMPLE BY DstIP
-  TTL DnsDate + INTERVAL 3000 DAY -- DNS_TTL_VARIABLE
+  TTL DnsDate + INTERVAL 7 DAY DELETE -- DNS_TTL_VARIABLE
   SETTINGS index_granularity = 8192
   AS SELECT DnsDate, timestamp, Server, IPVersion, DstIP, count(*) as c FROM DNS_LOG GROUP BY Server, DnsDate, timestamp, IPVersion, DstIP ;  
 

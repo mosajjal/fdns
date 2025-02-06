@@ -11,4 +11,4 @@ scrape_configs:
     static_configs:
       - targets:
         - coredns:9153
-        # TODO: add dnsmonster
+        - dnsmonster:2112

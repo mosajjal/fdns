@@ -3,12 +3,19 @@ services:
     image: docker.io/coredns/coredns:1.12.0
     command: ["-conf=/coredns.conf"]
     ports:
-      - 5310:5353
-      - 5310:5353/udp
+      # plain DNS
+      - 5310:5310/tcp
+      - 5310:5310/udp
+      # DNS Over HTTPS
+      - 5443:5443/tcp
+      # DNS Over TLS
+      - 5853:5853/tcp
     volumes:
       - blocklists:/blocklists
       - dnsmonster_socket:/dnsmonster_socket/
       - ./coredns.conf:/coredns.conf
+      - ./cert.pem:/certs/cert.pem:ro
+      - ./key.pem:/certs/key.pem:ro
     depends_on:
       - dnsmonster
   blocklists:
@@ -19,7 +26,8 @@ services:
   dnsmonster:
     image: ghcr.io/mosajjal/dnsmonster:v1.0.0
     depends_on:
-      - clickhouse
+      clickhouse:
+        condition: service_healthy
     command:
       - "--serverName=fdns"
       - "--dnstapSocket=unix:///dnsmonster_socket/dnstap.sock"
@@ -27,14 +35,13 @@ services:
       - "--clickhouseAddress=clickhouse:9000"
       - "--clickhouseOutputType=1"
       - "--clickhouseBatchSize=10"
+      - "--metricendpointtype=prometheus"
+      - "--metricprometheusendpoint=http://0.0.0.0:2112/metrics"
     volumes:
       - dnsmonster_socket:/dnsmonster_socket/
   clickhouse:
-    image: docker.io/clickhouse/clickhouse-server:23.8.4.69-alpine
+    image: docker.io/clickhouse:24.8
     restart: always
-    ports:
-      - "8123:8123"
-      - "9000:9000"
     ulimits:
       nofile:
         soft: 262144
@@ -44,23 +51,18 @@ services:
       - ./clickhouse/dictionaries/:/opt/dictionaries/
       - ./clickhouse/dns_dictionary.xml:/etc/clickhouse-server/dns_dictionary.xml
       - ./clickhouse/config.xml:/etc/clickhouse-server/config.xml
-      - clickhouse_logs:/var/log/clickhouse-server/
       - clickhouse_data:/var/lib/clickhouse/
     healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "-O-",
-          "-q",
-          "http://127.0.0.1:8123/?query=SELECT%20name%20FROM%20system.tables%20WHERE%20name%20%3D%20%27DNS_LOG%27",
-        ]
-      interval: 1m
+      test: ["CMD", "bash", "/healthcheck.sh"]
+      interval: 10s
       timeout: 10s
       retries: 3
+    post_start:
+      - command: sh -c "sleep 3; /usr/bin/clickhouse-client -h clickhouse --queries-file /tmp/tables.sql --echo --verbose"
+      # create the healtcheck script
+      - command: sh -c "echo \"! clickhouse-client -h clickhouse -q 'EXISTS TABLE DNS_LOG' | xargs -I{} test {} -eq 0 \" > /healthcheck.sh && chmod +x /healthcheck.sh"
   grafana:
-    # needs to connect to victoriametrics on "victoriametrics:8428" -> post-up?
-    image: docker.io/grafana/grafana:9.3.6
+    image: docker.io/grafana/grafana:11.5.1
     restart: always
     ports:
       - "3000:3000"
@@ -69,6 +71,8 @@ services:
     volumes:
       - ./bin/curl:/sbin/curl
       - ./bin/jq:/sbin/jq
+    post_start:
+      - command: sh -c "sleep 3; grafana-cli plugins install vertamedia-clickhouse-datasource"
   victoriametrics:
     image: docker.io/victoriametrics/victoria-metrics:v1.110.0-scratch
     command:
@@ -78,7 +82,6 @@ services:
       - ./victoriametrics.yaml:/etc/victoriametrics.yaml
 volumes:
   dnsmonster_socket:
-  clickhouse_logs:
   clickhouse_data:
   victoriametrics_data:
   blocklists:
